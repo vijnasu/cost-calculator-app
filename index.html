@@ -164,7 +164,9 @@
                                 <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Profit Margin %</td><td id="output_profit_margin" class="py-3 px-2 text-right text-green-800">6.33%</td></tr>
                                 <tr class="bg-orange-50 font-bold"><td class="py-3 px-2 text-orange-800">Breakeven Selling Price/pc</td><td id="output_breakeven_price" class="py-3 px-2 text-right text-orange-800">₹710.04</td></tr>
                                 <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Advance Amount</td><td id="output_advance_amount" class="py-3 px-2 text-right font-semibold">₹1,00,000.00</td></tr>
-                                <tr class="bg-blue-50 font-bold"><td class="py-3 px-2 text-blue-800">Balance Payable by Customer</td><td id="output_balance_payable" class="py-3 px-2 text-right text-blue-800">₹6,58,035.10</td></tr>
+                                <!-- NEW SECTION FOR INVESTMENT -->
+                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Total Project Cost</td><td id="output_total_project_cost" class="py-3 px-2 text-right">₹7,10,035.00</td></tr>
+                                <tr class="bg-blue-50 font-bold"><td class="py-3 px-2 text-blue-800">Net Cash Outlay</td><td id="output_net_cash_outlay" class="py-3 px-2 text-right text-blue-800">₹6,58,035.10</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -254,7 +256,10 @@
             document.getElementById('output_profit_margin').textContent = `${(c.profit_margin * 100).toFixed(2)}%`;
             document.getElementById('output_breakeven_price').textContent = formatCurrency(c.breakeven_price);
             document.getElementById('output_advance_amount').textContent = formatCurrency(c.advance_amount);
-            document.getElementById('output_balance_payable').textContent = formatCurrency(c.balance_payable);
+            
+            // NEW UI UPDATES FOR INVESTMENT SECTION
+            document.getElementById('output_total_project_cost').textContent = formatCurrency(c.landed_cost_total);
+            document.getElementById('output_net_cash_outlay').textContent = formatCurrency(c.balance_payable);
 
             updateCharts();
         }

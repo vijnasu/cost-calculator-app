@@ -10,15 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Warm Neutrals -->
-    <!-- Application Structure Plan: A two-column interactive dashboard. The left column contains sliders and inputs for all cost and sales variables, allowing for real-time "what-if" analysis. The right column displays the results through three components: 1) Key Performance Indicator (KPI) cards for instant visibility of crucial metrics like profit and breakeven price. 2) A donut chart visualizing the breakdown of total costs. 3) A bar chart comparing total cost to total revenue. This structure was chosen to transform the static calculation sheet into a dynamic, user-friendly tool for financial exploration and decision-making, prioritizing immediate feedback and visual understanding over the original linear table format. -->
-    <!-- Visualization & Content Choices: 
-        - Inputs (Qty, Price, etc.): Goal: Allow user modification. Method: HTML sliders and number inputs. Interaction: Real-time updates via 'input' event listeners. Justification: Sliders provide a tactile, exploratory experience. Library: Vanilla JS.
-        - Key Metrics (Gross Profit, Margin): Goal: Inform with high-level results. Method: Styled "KPI cards" with large text. Interaction: Dynamic text update. Justification: Provides immediate, scannable answers to key business questions. Library: Vanilla JS.
-        - Cost Breakdown: Goal: Compare cost components. Method: Donut Chart. Interaction: Updates on input change, tooltips on hover. Justification: A donut chart is ideal for showing the proportional composition of the 'Landed Cost (Total)'. Library: Chart.js.
-        - Profit Analysis: Goal: Compare total costs vs. revenue. Method: Bar Chart. Interaction: Updates on input change. Justification: A direct bar comparison clearly visualizes the gap between revenue and cost, representing the gross profit. Library: Chart.js.
-        - Detailed Calculations: Goal: Provide granular data. Method: HTML Table. Interaction: All cells update dynamically. Justification: Offers full transparency, mirroring the source document for users who need to see every calculation step. Library: Vanilla JS.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -61,53 +52,61 @@
             <section id="inputs" class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg">
                 <h2 class="text-2xl font-bold mb-6 border-b pb-3 text-gray-700">Input Variables</h2>
                 <div class="space-y-6">
-                    <!-- Input Controls -->
-                    <div>
-                        <label for="quantity" class="block font-medium text-gray-700 mb-1">Quantity (Qty)</label>
-                        <input type="number" id="quantity" min="1" max="2000" value="1000" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <!-- Dynamic inputs for different sizes -->
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold mb-3">Sizes & Factory Costs</h3>
+                        <table class="w-full text-left table-auto border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-600">
+                                    <th class="p-2 border-b">Size</th>
+                                    <th class="p-2 border-b">Qty</th>
+                                    <th class="p-2 border-b">Factory Price (₹)</th>
+                                    <!-- NEW COLUMN FOR SELLING PRICE -->
+                                    <th class="p-2 border-b">Selling Price/pc (₹)</th>
+                                    <th class="p-2 border-b"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="size-table-body">
+                                <!-- Rows will be added here by JS -->
+                            </tbody>
+                        </table>
+                        <div class="flex justify-end mt-4 space-x-2">
+                             <button id="add-size-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors duration-200">
+                                Add Size
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <label for="factory_price" class="block font-medium text-gray-700 mb-1">Factory Price (₹)</label>
-                        <input type="number" id="factory_price" min="1" max="1000" step="0.5" value="600" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <!-- Updated default value for selling price -->
-                        <label for="selling_price" class="block font-medium text-gray-700 mb-1">Selling Price/pc (₹)</label>
-                        <input type="number" id="selling_price" min="1" max="1000" step="0.5" value="650" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                     <div>
-                        <!-- Updated default value for GST -->
-                        <label for="gst_percent" class="block font-medium text-gray-700 mb-1">GST (%)</label>
-                        <input type="number" id="gst_percent" min="0" max="50" step="1" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <!-- Updated default value for transport -->
-                        <label for="transport" class="block font-medium text-gray-700 mb-1">Transport (₹)</label>
-                        <input type="number" id="transport" min="0" max="5000" step="10" value="2000" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <!-- Updated default value for packaging -->
-                        <label for="packaging" class="block font-medium text-gray-700 mb-1">Packaging (₹)</label>
-                        <input type="number" id="packaging" min="0" max="500" step="5" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <!-- Updated default value for loading -->
-                        <label for="loading" class="block font-medium text-gray-700 mb-1">Loading (₹)</label>
-                        <input type="number" id="loading" min="0" max="500" step="5" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                     <div>
-                        <!-- Updated default value for other costs -->
-                        <label for="other" class="block font-medium text-gray-700 mb-1">Other (₹)</label>
-                        <input type="number" id="other" min="0" max="500" step="5" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <!-- Updated default value for defect rate -->
-                        <label for="defect_percent" class="block font-medium text-gray-700 mb-1">Defect Rate (%)</label>
-                        <input type="number" id="defect_percent" min="0" max="100" step="1" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label for="advance_amount" class="block font-medium text-gray-700 mb-1">Advance Amount (₹)</label>
-                        <input type="number" id="advance_amount" min="0" max="200000" step="100" value="100000" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                    <!-- Common Cost Inputs -->
+                    <div class="space-y-6 mt-8">
+                        <div>
+                            <label for="gst_percent" class="block font-medium text-gray-700 mb-1">GST (%)</label>
+                            <input type="number" id="gst_percent" min="0" max="50" step="1" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="transport" class="block font-medium text-gray-700 mb-1">Transport (₹)</label>
+                            <input type="number" id="transport" min="0" max="5000" step="10" value="2000" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="packaging" class="block font-medium text-gray-700 mb-1">Packaging (₹)</label>
+                            <input type="number" id="packaging" min="0" max="500" step="5" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="loading" class="block font-medium text-gray-700 mb-1">Loading (₹)</label>
+                            <input type="number" id="loading" min="0" max="500" step="5" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="other" class="block font-medium text-gray-700 mb-1">Other (₹)</label>
+                            <input type="number" id="other" min="0" max="500" step="5" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="defect_percent" class="block font-medium text-gray-700 mb-1">Defect Rate (%)</label>
+                            <input type="number" id="defect_percent" min="0" max="100" step="1" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="advance_amount" class="block font-medium text-gray-700 mb-1">Advance Amount (₹)</label>
+                            <input type="number" id="advance_amount" min="0" max="200000" step="100" value="100000" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
                     </div>
                 </div>
             </section>
@@ -157,6 +156,7 @@
                                 <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Landed Cost (Total)</td><td id="output_landed_cost_total" class="py-3 px-2 text-right">₹7,10,035.00</td></tr>
                                 <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Landed Cost/pc</td><td id="output_landed_cost_pc" class="py-3 px-2 text-right font-semibold">₹710.04</td></tr>
                                 <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Sales Revenue (Gross)</td><td id="output_sales_revenue" class="py-3 px-2 text-right font-semibold">₹7,73,505.10</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Total Quantity</td><td id="output_total_quantity" class="py-3 px-2 text-right font-semibold">1000</td></tr>
                                 <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Expected Defect Qty</td><td id="output_defect_qty" class="py-3 px-2 text-right font-semibold">20</td></tr>
                                 <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Net Saleable Qty</td><td id="output_net_saleable_qty" class="py-3 px-2 text-right font-semibold">980</td></tr>
                                 <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Adjusted Sales Revenue</td><td id="output_adjusted_sales_revenue" class="py-3 px-2 text-right">₹7,58,035.10</td></tr>
@@ -174,32 +174,31 @@
     </div>
 
     <script>
-        // Updated state to use a fixed advance amount instead of a percentage.
+        // Updated state to handle multiple sizes as an array, each with its own selling price
         const state = {
-            quantity: 1000,
-            factory_price: 600,
-            // Updated default value
-            selling_price: 650,
-            // Updated default value
+            sizes: [
+                // NEW DEFAULT VALUES BASED ON USER REQUEST
+                { id: 1, size: '30', quantity: 200, factory_price: 600, selling_price: 650 },
+                { id: 2, size: '32', quantity: 200, factory_price: 650, selling_price: 700 },
+                { id: 3, size: '34', quantity: 200, factory_price: 700, selling_price: 750 },
+                { id: 4, size: '36', quantity: 200, factory_price: 750, selling_price: 800 },
+                { id: 5, size: '38', quantity: 100, factory_price: 800, selling_price: 850 },
+                { id: 6, size: '40', quantity: 100, factory_price: 850, selling_price: 900 }
+            ],
             gst_percent: 0,
-            // Updated default value
             transport: 2000,
-            // Updated default value
             packaging: 0,
-            // Updated default value
             loading: 0,
-            // Updated default value
             other: 0,
-            // Updated default value
             defect_percent: 0,
             advance_amount: 100000,
         };
 
         const calculations = {};
-
-        const inputIds = Object.keys(state);
+        const commonInputIds = ['gst_percent', 'transport', 'packaging', 'loading', 'other', 'defect_percent', 'advance_amount'];
         
         let costBreakdownChart, revenueCostChart;
+        let sizeIdCounter = 7; // Start counter after the new defaults
 
         function formatCurrency(value) {
             return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2 }).format(value);
@@ -211,19 +210,27 @@
             const defectRate = s.defect_percent / 100;
             const gstRate = s.gst_percent / 100;
 
-            c.purchase_subtotal = s.quantity * s.factory_price;
+            // Calculate totals from all sizes
+            c.purchase_subtotal = s.sizes.reduce((sum, size) => sum + (size.quantity * size.factory_price), 0);
+            c.total_quantity = s.sizes.reduce((sum, size) => sum + size.quantity, 0);
+
             c.gst_amount = c.purchase_subtotal * gstRate;
             c.landed_cost_total = c.purchase_subtotal + c.gst_amount + s.transport + s.packaging + s.loading + s.other;
-            c.landed_cost_pc = c.landed_cost_total / s.quantity;
-            c.sales_revenue = s.quantity * s.selling_price;
-            c.expected_defect_qty = Math.round(s.quantity * defectRate);
-            c.net_saleable_qty = s.quantity - c.expected_defect_qty;
-            c.adjusted_sales_revenue = c.net_saleable_qty * s.selling_price;
+            c.landed_cost_pc = c.total_quantity > 0 ? (c.landed_cost_total / c.total_quantity) : 0;
+            
+            // Calculate gross sales revenue by summing revenue for each size
+            c.sales_revenue_gross = s.sizes.reduce((sum, size) => sum + (size.quantity * size.selling_price), 0);
+
+            c.expected_defect_qty = Math.round(c.total_quantity * defectRate);
+            c.net_saleable_qty = c.total_quantity - c.expected_defect_qty;
+            
+            // Calculate adjusted sales revenue by applying defect rate to the total gross revenue
+            c.adjusted_sales_revenue = c.sales_revenue_gross * (1 - defectRate);
+            
             c.gross_profit = c.adjusted_sales_revenue - c.landed_cost_total;
             c.profit_margin = c.adjusted_sales_revenue > 0 ? (c.gross_profit / c.adjusted_sales_revenue) : 0;
             c.breakeven_price = c.landed_cost_pc;
             c.advance_amount = s.advance_amount;
-            // NEW CALCULATION: Balance payable by customer
             c.balance_payable = c.adjusted_sales_revenue - c.advance_amount;
         }
 
@@ -238,7 +245,8 @@
             document.getElementById('output_gst_amount').textContent = formatCurrency(c.gst_amount);
             document.getElementById('output_landed_cost_total').textContent = formatCurrency(c.landed_cost_total);
             document.getElementById('output_landed_cost_pc').textContent = formatCurrency(c.landed_cost_pc);
-            document.getElementById('output_sales_revenue').textContent = formatCurrency(c.sales_revenue);
+            document.getElementById('output_sales_revenue').textContent = formatCurrency(c.sales_revenue_gross);
+            document.getElementById('output_total_quantity').textContent = c.total_quantity;
             document.getElementById('output_defect_qty').textContent = c.expected_defect_qty;
             document.getElementById('output_net_saleable_qty').textContent = c.net_saleable_qty;
             document.getElementById('output_adjusted_sales_revenue').textContent = formatCurrency(c.adjusted_sales_revenue);
@@ -246,7 +254,6 @@
             document.getElementById('output_profit_margin').textContent = `${(c.profit_margin * 100).toFixed(2)}%`;
             document.getElementById('output_breakeven_price').textContent = formatCurrency(c.breakeven_price);
             document.getElementById('output_advance_amount').textContent = formatCurrency(c.advance_amount);
-            // NEW UI UPDATE: Balance payable by customer
             document.getElementById('output_balance_payable').textContent = formatCurrency(c.balance_payable);
 
             updateCharts();
@@ -270,18 +277,88 @@
             revenueCostChart.data.datasets[1].data = [c.landed_cost_total];
             revenueCostChart.update();
         }
+
+        function renderSizeInputs() {
+            const container = document.getElementById('size-table-body');
+            container.innerHTML = '';
+            state.sizes.forEach(sizeItem => {
+                const row = document.createElement('tr');
+                row.className = "hover:bg-gray-50";
+                row.innerHTML = `
+                    <td class="p-2 border-b">
+                        <input type="text" value="${sizeItem.size}" class="w-full text-center border rounded-lg p-1" data-id="${sizeItem.id}" data-key="size">
+                    </td>
+                    <td class="p-2 border-b">
+                        <input type="number" min="1" value="${sizeItem.quantity}" class="w-full text-center border rounded-lg p-1" data-id="${sizeItem.id}" data-key="quantity">
+                    </td>
+                    <td class="p-2 border-b">
+                        <input type="number" min="1" step="0.5" value="${sizeItem.factory_price}" class="w-full text-center border rounded-lg p-1" data-id="${sizeItem.id}" data-key="factory_price">
+                    </td>
+                     <!-- NEW SELLING PRICE INPUT -->
+                     <td class="p-2 border-b">
+                        <input type="number" min="1" step="0.5" value="${sizeItem.selling_price}" class="w-full text-center border rounded-lg p-1" data-id="${sizeItem.id}" data-key="selling_price">
+                    </td>
+                    <td class="p-2 border-b">
+                        <button class="remove-size-btn text-red-500 hover:text-red-700 font-bold" data-id="${sizeItem.id}">
+                            &times;
+                        </button>
+                    </td>
+                `;
+                container.appendChild(row);
+            });
+        }
         
         function setupEventListeners() {
-            inputIds.forEach(id => {
+            // Event listeners for common inputs
+            commonInputIds.forEach(id => {
                 const element = document.getElementById(id);
                 element.addEventListener('input', (e) => {
                     let value = parseFloat(e.target.value);
-                    if (value || value === 0) {
-                      state[id] = value;
-                      calculate();
-                      updateUI();
+                    if (e.target.id === 'gst_percent' || e.target.id === 'defect_percent') {
+                        state[id] = value;
+                    } else if (value || value === 0) {
+                        state[id] = value;
                     }
+                    calculate();
+                    updateUI();
                 });
+            });
+
+            // Event listeners for dynamic size inputs
+            document.getElementById('size-table-body').addEventListener('input', (e) => {
+                const target = e.target;
+                if (target.tagName === 'INPUT') {
+                    const id = parseInt(target.dataset.id);
+                    const key = target.dataset.key;
+                    const value = key === 'size' ? target.value : parseFloat(target.value);
+                    const sizeItem = state.sizes.find(item => item.id === id);
+                    if (sizeItem) {
+                        sizeItem[key] = value;
+                        calculate();
+                        updateUI();
+                    }
+                }
+            });
+
+            // Add size button
+            document.getElementById('add-size-btn').addEventListener('click', () => {
+                sizeIdCounter++;
+                // Set default values for the new row
+                state.sizes.push({ id: sizeIdCounter, size: '', quantity: 0, factory_price: 0, selling_price: 0 });
+                renderSizeInputs();
+                calculate();
+                updateUI();
+            });
+
+            // Remove size button
+            document.getElementById('size-table-body').addEventListener('click', (e) => {
+                if (e.target.classList.contains('remove-size-btn')) {
+                    const id = parseInt(e.target.dataset.id);
+                    state.sizes = state.sizes.filter(item => item.id !== id);
+                    renderSizeInputs();
+                    calculate();
+                    updateUI();
+                }
             });
         }
         
@@ -392,6 +469,7 @@
         }
 
         window.onload = () => {
+            renderSizeInputs();
             setupEventListeners();
             initCharts();
             calculate();

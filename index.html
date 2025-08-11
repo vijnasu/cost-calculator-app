@@ -111,15 +111,13 @@
                             <label for="profit_share_percent_one" class="block font-medium text-gray-700 mb-1">Partner 1 Profit Share (%)</label>
                             <input type="number" id="profit_share_percent_one" min="0" max="100" step="1" value="50" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
-                         <!-- NEW INPUTS FOR PARTNERSHIP -->
+                         <!-- UPDATED INPUTS FOR PARTNERSHIP - NO LONGER DYNAMICALLY SET -->
                         <div>
                             <label for="partner_one_investment" class="block font-medium text-gray-700 mb-1">Partner 1 Investment (₹)</label>
-                            <!-- This value will be set dynamically by JS, no need for a default here -->
                             <input type="number" id="partner_one_investment" min="0" max="2000000" step="100" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div>
                             <label for="partner_two_investment" class="block font-medium text-gray-700 mb-1">Partner 2 Investment (₹)</label>
-                             <!-- This value will be set dynamically by JS -->
                             <input type="number" id="partner_two_investment" min="0" max="2000000" step="100" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
@@ -178,15 +176,16 @@
                                 <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Gross Profit</td><td id="output_gross_profit" class="py-3 px-2 text-right text-green-800">₹48,000.00</td></tr>
                                 <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Profit Margin %</td><td id="output_profit_margin" class="py-3 px-2 text-right text-green-800">6.33%</td></tr>
                                 <tr class="bg-orange-50 font-bold"><td class="py-3 px-2 text-orange-800">Breakeven Selling Price/pc</td><td id="output_breakeven_price" class="py-3 px-2 text-right text-orange-800">₹710.04</td></tr>
-                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Advance Amount</td><td id="output_advance_amount" class="py-3 px-2 text-right font-semibold">₹1,00,000.00</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Advance by Customer</td><td id="output_advance_amount" class="py-3 px-2 text-right font-semibold">₹1,00,000.00</td></tr>
                                 <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Total Project Cost</td><td id="output_total_project_cost" class="py-3 px-2 text-right">₹7,10,035.00</td></tr>
                                 <tr class="bg-blue-50 font-bold"><td class="py-3 px-2 text-blue-800">Net Cash Outlay (Your Investment)</td><td id="output_net_cash_outlay" class="py-3 px-2 text-right text-blue-800">₹6,10,035.00</td></tr>
                                  <!-- NEW SECTION FOR INVESTMENT AND PROFIT SHARING -->
                                 <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Partner 1 Investment</td><td id="output_partner_one_investment" class="py-3 px-2 text-right">₹3,05,017.50</td></tr>
                                 <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Partner 2 Investment</td><td id="output_partner_two_investment" class="py-3 px-2 text-right">₹3,05,017.50</td></tr>
+                                 <!-- ADDED NEW ROW FOR TOTAL PARTNER INVESTMENT -->
+                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Total Partner Investment</td><td id="output_total_partner_investment" class="py-3 px-2 text-right">₹6,10,035.00</td></tr>
                                 <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Partner 1 Profit Share</td><td id="output_partner_one_profit_share" class="py-3 px-2 text-right text-green-800">₹24,000.00</td></tr>
                                 <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Partner 2 Profit Share</td><td id="output_partner_two_profit_share" class="py-3 px-2 text-right text-green-800">₹24,000.00</td></tr>
-                                <!-- NEW ROWS FOR TOTAL RETURN -->
                                 <tr class="bg-green-100 font-bold"><td class="py-3 px-2 text-green-900">Total Return for Partner 1</td><td id="output_partner_one_total_return" class="py-3 px-2 text-right text-green-900">₹3,29,017.50</td></tr>
                                 <tr class="bg-green-100 font-bold"><td class="py-3 px-2 text-green-900">Total Return for Partner 2</td><td id="output_partner_two_total_return" class="py-3 px-2 text-right text-green-900">₹3,29,017.50</td></tr>
                             </tbody>
@@ -198,10 +197,8 @@
     </div>
 
     <script>
-        // Updated state to handle multiple sizes as an array, each with its own selling price
         const state = {
             sizes: [
-                // NEW DEFAULT VALUES BASED ON USER REQUEST
                 { id: 1, size: '30', quantity: 200, factory_price: 600, selling_price: 650 },
                 { id: 2, size: '32', quantity: 200, factory_price: 650, selling_price: 700 },
                 { id: 3, size: '34', quantity: 200, factory_price: 700, selling_price: 750 },
@@ -216,14 +213,13 @@
             other: 0,
             defect_percent: 0,
             advance_amount: 100000,
-            // NEW STATE FOR PARTNERSHIP
-            partner_one_investment: 0, // This will be set dynamically
-            partner_two_investment: 0, // This will be set dynamically
-            profit_share_percent_one: 50
+            profit_share_percent_one: 50,
+            // These will be user-controlled after initial load.
+            partner_one_investment: 0,
+            partner_two_investment: 0
         };
 
         const calculations = {};
-        // The investment inputs are no longer included in the common input IDs for automatic value setting.
         const commonInputIds = [
             'gst_percent', 
             'transport', 
@@ -234,9 +230,13 @@
             'advance_amount',
             'profit_share_percent_one' 
         ];
+        const partnerInvestmentIds = [
+            'partner_one_investment',
+            'partner_two_investment'
+        ];
         
         let costBreakdownChart, revenueCostChart;
-        let sizeIdCounter = 7; // Start counter after the new defaults
+        let sizeIdCounter = 7;
 
         function formatCurrency(value) {
             return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2 }).format(value);
@@ -256,13 +256,11 @@
             c.landed_cost_total = c.purchase_subtotal + c.gst_amount + s.transport + s.packaging + s.loading + s.other;
             c.landed_cost_pc = c.total_quantity > 0 ? (c.landed_cost_total / c.total_quantity) : 0;
             
-            // Calculate gross sales revenue by summing revenue for each size
             c.sales_revenue_gross = s.sizes.reduce((sum, size) => sum + (size.quantity * size.selling_price), 0);
 
             c.expected_defect_qty = Math.round(c.total_quantity * defectRate);
             c.net_saleable_qty = c.total_quantity - c.expected_defect_qty;
             
-            // Calculate adjusted sales revenue by applying defect rate to the total gross revenue
             c.adjusted_sales_revenue = c.sales_revenue_gross * (1 - defectRate);
             
             c.gross_profit = c.adjusted_sales_revenue - c.landed_cost_total;
@@ -270,25 +268,20 @@
             c.breakeven_price = c.landed_cost_pc;
             c.advance_amount = s.advance_amount;
             
-            // CORRECTED Net Cash Outlay Calculation
             c.net_cash_outlay = c.landed_cost_total - s.advance_amount;
 
-            // NEW LOGIC: AUTOMATICALLY SET PARTNER INVESTMENT TO HALF OF NET CASH OUTLAY
-            // Based on user request, the investment is now based on the profit sharing percentage.
-            const partner_one_share_rate = s.profit_share_percent_one / 100;
-            const partner_two_share_rate = 1 - partner_one_share_rate;
-
-            // Calculate the investment for each partner based on the profit share rate and net cash outlay.
-            state.partner_one_investment = c.net_cash_outlay * partner_one_share_rate;
-            state.partner_two_investment = c.net_cash_outlay * partner_two_share_rate;
-
+            // Partner investments are now directly from state, which is updated by user input.
             c.partner_one_investment = state.partner_one_investment;
             c.partner_two_investment = state.partner_two_investment;
+            c.total_partner_investment = c.partner_one_investment + c.partner_two_investment;
+
+            // Profit sharing is still based on the profit share percentage input.
+            const partner_one_share_rate = s.profit_share_percent_one / 100;
+            const partner_two_share_rate = 1 - partner_one_share_rate;
             
             c.partner_one_profit_share = c.gross_profit * partner_one_share_rate;
             c.partner_two_profit_share = c.gross_profit * partner_two_share_rate;
             
-            // NEW CALCULATION: Total Return for each partner
             c.partner_one_total_return = c.partner_one_investment + c.partner_one_profit_share;
             c.partner_two_total_return = c.partner_two_investment + c.partner_two_profit_share;
         }
@@ -317,22 +310,20 @@
             document.getElementById('output_total_project_cost').textContent = formatCurrency(c.landed_cost_total);
             document.getElementById('output_net_cash_outlay').textContent = formatCurrency(c.net_cash_outlay);
             
-            // NEW UI UPDATES FOR PARTNERSHIP
-            document.getElementById('partner_one_investment').value = c.partner_one_investment.toFixed(2);
-            document.getElementById('partner_two_investment').value = c.partner_two_investment.toFixed(2);
+            // UI UPDATES FOR PARTNERSHIP
             document.getElementById('output_partner_one_investment').textContent = formatCurrency(c.partner_one_investment);
             document.getElementById('output_partner_two_investment').textContent = formatCurrency(c.partner_two_investment);
+            document.getElementById('output_total_partner_investment').textContent = formatCurrency(c.total_partner_investment);
             document.getElementById('output_partner_one_profit_share').textContent = formatCurrency(c.partner_one_profit_share);
             document.getElementById('output_partner_two_profit_share').textContent = formatCurrency(c.partner_two_profit_share);
             
-            // NEW UI UPDATES FOR TOTAL RETURN
+            // UI UPDATES FOR TOTAL RETURN
             document.getElementById('output_partner_one_total_return').textContent = formatCurrency(c.partner_one_total_return);
             document.getElementById('output_partner_two_total_return').textContent = formatCurrency(c.partner_two_total_return);
 
             updateCharts();
         }
         
-        // This function now correctly resides in a scope accessible by updateUI
         function updateCharts() {
             const c = calculations;
             // Update Cost Breakdown Chart
@@ -397,6 +388,17 @@
                 });
             });
 
+            // Event listeners for partner investment inputs - NEW
+            partnerInvestmentIds.forEach(id => {
+                const element = document.getElementById(id);
+                element.addEventListener('input', (e) => {
+                    let value = parseFloat(e.target.value);
+                    state[id] = value || 0;
+                    calculate();
+                    updateUI();
+                });
+            });
+
             // Event listeners for dynamic size inputs
             document.getElementById('size-table-body').addEventListener('input', (e) => {
                 const target = e.target;
@@ -416,7 +418,6 @@
             // Add size button
             document.getElementById('add-size-btn').addEventListener('click', () => {
                 sizeIdCounter++;
-                // Set default values for the new row
                 state.sizes.push({ id: sizeIdCounter, size: '', quantity: 0, factory_price: 0, selling_price: 0 });
                 renderSizeInputs();
                 calculate();
@@ -540,13 +541,30 @@
                 }
             });
         }
+        
+        // This function now handles the initial calculation and UI update
+        function initializeApp() {
+            calculate();
+            
+            // Set initial investment values to match the net cash outlay, split 50/50.
+            const netCashOutlay = calculations.net_cash_outlay;
+            state.partner_one_investment = netCashOutlay / 2;
+            state.partner_two_investment = netCashOutlay / 2;
+
+            // Update the UI input fields with the initial values
+            document.getElementById('partner_one_investment').value = state.partner_one_investment.toFixed(2);
+            document.getElementById('partner_two_investment').value = state.partner_two_investment.toFixed(2);
+
+            // Re-run calculation with the new initial investment values
+            calculate();
+            updateUI();
+        }
 
         window.onload = () => {
             renderSizeInputs();
             setupEventListeners();
             initCharts();
-            calculate();
-            updateUI();
+            initializeApp(); // Call the new initialization function
         };
     </script>
 </body>

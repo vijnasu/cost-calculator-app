@@ -162,34 +162,51 @@
                     <h3 class="text-xl font-bold mb-4 text-gray-700">Detailed Calculation</h3>
                      <p class="text-sm text-gray-500 mb-4">Here is the line-by-line breakdown of all calculations based on your inputs.</p>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left">
+                        
+                        <!-- Project Overview Table -->
+                        <h4 class="text-lg font-semibold mb-2 mt-4 text-gray-700">Project Overview</h4>
+                        <table class="w-full text-left table-fixed border-collapse">
                             <tbody class="divide-y divide-gray-200">
-                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Purchase Subtotal</td><td id="output_purchase_subtotal" class="py-3 px-2 text-right font-semibold">₹6,00,000.00</td></tr>
-                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">GST Amount</td><td id="output_gst_amount" class="py-3 px-2 text-right font-semibold">₹1,08,000.00</td></tr>
-                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Landed Cost (Total)</td><td id="output_landed_cost_total" class="py-3 px-2 text-right">₹7,10,035.00</td></tr>
-                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Landed Cost/pc</td><td id="output_landed_cost_pc" class="py-3 px-2 text-right font-semibold">₹710.04</td></tr>
-                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Sales Revenue (Gross)</td><td id="output_sales_revenue" class="py-3 px-2 text-right font-semibold">₹7,73,505.10</td></tr>
-                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Total Quantity</td><td id="output_total_quantity" class="py-3 px-2 text-right font-semibold">1000</td></tr>
-                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Expected Defect Qty</td><td id="output_defect_qty" class="py-3 px-2 text-right font-semibold">20</td></tr>
-                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Net Saleable Qty</td><td id="output_net_saleable_qty" class="py-3 px-2 text-right font-semibold">980</td></tr>
-                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Adjusted Sales Revenue</td><td id="output_adjusted_sales_revenue" class="py-3 px-2 text-right">₹7,58,035.10</td></tr>
-                                <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Gross Profit</td><td id="output_gross_profit" class="py-3 px-2 text-right text-green-800">₹48,000.00</td></tr>
-                                <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Profit Margin %</td><td id="output_profit_margin" class="py-3 px-2 text-right text-green-800">6.33%</td></tr>
-                                <tr class="bg-orange-50 font-bold"><td class="py-3 px-2 text-orange-800">Breakeven Selling Price/pc</td><td id="output_breakeven_price" class="py-3 px-2 text-right text-orange-800">₹710.04</td></tr>
-                                <tr class="hover:bg-gray-50"><td class="py-3 px-2 font-medium">Advance by Customer</td><td id="output_advance_amount" class="py-3 px-2 text-right font-semibold">₹1,00,000.00</td></tr>
-                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Total Project Cost</td><td id="output_total_project_cost" class="py-3 px-2 text-right">₹7,10,035.00</td></tr>
-                                <tr class="bg-blue-50 font-bold"><td class="py-3 px-2 text-blue-800">Net Cash Outlay (Your Investment)</td><td id="output_net_cash_outlay" class="py-3 px-2 text-right text-blue-800">₹6,10,035.00</td></tr>
-                                 <!-- NEW SECTION FOR INVESTMENT AND PROFIT SHARING -->
-                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Partner 1 Investment</td><td id="output_partner_one_investment" class="py-3 px-2 text-right">₹3,05,017.50</td></tr>
-                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Partner 2 Investment</td><td id="output_partner_two_investment" class="py-3 px-2 text-right">₹3,05,017.50</td></tr>
-                                 <!-- ADDED NEW ROW FOR TOTAL PARTNER INVESTMENT -->
-                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Total Partner Investment</td><td id="output_total_partner_investment" class="py-3 px-2 text-right">₹6,10,035.00</td></tr>
-                                <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Partner 1 Profit Share</td><td id="output_partner_one_profit_share" class="py-3 px-2 text-right text-green-800">₹24,000.00</td></tr>
-                                <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Partner 2 Profit Share</td><td id="output_partner_two_profit_share" class="py-3 px-2 text-right text-green-800">₹24,000.00</td></tr>
-                                <tr class="bg-green-100 font-bold"><td class="py-3 px-2 text-green-900">Total Return for Partner 1</td><td id="output_partner_one_total_return" class="py-3 px-2 text-right text-green-900">₹3,29,017.50</td></tr>
-                                <tr class="bg-green-100 font-bold"><td class="py-3 px-2 text-green-900">Total Return for Partner 2</td><td id="output_partner_two_total_return" class="py-3 px-2 text-right text-green-900">₹3,29,017.50</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-2 px-2 font-medium">Purchase Subtotal</td><td id="output_purchase_subtotal" class="py-2 px-2 text-right font-semibold">₹6,00,000.00</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-2 px-2 font-medium">GST Amount</td><td id="output_gst_amount" class="py-2 px-2 text-right font-semibold">₹1,08,000.00</td></tr>
+                                <tr class="bg-gray-100 font-bold"><td class="py-2 px-2">Landed Cost (Total)</td><td id="output_landed_cost_total" class="py-2 px-2 text-right">₹7,10,035.00</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-2 px-2 font-medium">Landed Cost/pc</td><td id="output_landed_cost_pc" class="py-2 px-2 text-right font-semibold">₹710.04</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-2 px-2 font-medium">Sales Revenue (Gross)</td><td id="output_sales_revenue" class="py-2 px-2 text-right font-semibold">₹7,73,505.10</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-2 px-2 font-medium">Total Quantity</td><td id="output_total_quantity" class="py-2 px-2 text-right font-semibold">1000</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-2 px-2 font-medium">Expected Defect Qty</td><td id="output_defect_qty" class="py-2 px-2 text-right font-semibold">20</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-2 px-2 font-medium">Net Saleable Qty</td><td id="output_net_saleable_qty" class="py-2 px-2 text-right font-semibold">980</td></tr>
+                                <tr class="bg-gray-100 font-bold"><td class="py-2 px-2">Adjusted Sales Revenue</td><td id="output_adjusted_sales_revenue" class="py-2 px-2 text-right">₹7,58,035.10</td></tr>
+                                <tr class="bg-green-50 font-bold"><td class="py-2 px-2 text-green-800">Gross Profit</td><td id="output_gross_profit" class="py-2 px-2 text-right text-green-800">₹48,000.00</td></tr>
+                                <tr class="bg-green-50 font-bold"><td class="py-2 px-2 text-green-800">Profit Margin %</td><td id="output_profit_margin" class="py-2 px-2 text-right text-green-800">6.33%</td></tr>
+                                <tr class="bg-orange-50 font-bold"><td class="py-2 px-2 text-orange-800">Breakeven Selling Price/pc</td><td id="output_breakeven_price" class="py-2 px-2 text-right text-orange-800">₹710.04</td></tr>
                             </tbody>
                         </table>
+                        
+                        <!-- Customer Payments Table -->
+                        <h4 class="text-lg font-semibold mb-2 mt-6 text-gray-700">Customer Payments</h4>
+                        <table class="w-full text-left table-fixed border-collapse">
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="bg-gray-100 font-bold"><td class="py-2 px-2">Total Project Cost</td><td id="output_total_project_cost" class="py-2 px-2 text-right">₹7,10,035.00</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-2 px-2 font-medium">Advance by Customer</td><td id="output_advance_amount" class="py-2 px-2 text-right font-semibold">₹1,00,000.00</td></tr>
+                                <tr class="bg-gray-100 font-bold"><td class="py-2 px-2">Balance Payable by Customer</td><td id="output_balance_payable_by_customer" class="py-2 px-2 text-right">₹6,10,035.00</td></tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Partner Financials Table -->
+                        <h4 class="text-lg font-semibold mb-2 mt-6 text-gray-700">Partner Financials</h4>
+                        <table class="w-full text-left table-fixed border-collapse">
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="bg-blue-50 font-bold"><td class="py-2 px-2 text-blue-800">Net Cash Outlay (Total Investment)</td><td id="output_net_cash_outlay" class="py-2 px-2 text-right text-blue-800">₹6,10,035.00</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-2 px-2 font-medium">Partner 1 Investment</td><td id="output_partner_one_investment" class="py-2 px-2 text-right font-semibold">₹3,05,017.50</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="py-2 px-2 font-medium">Partner 2 Investment</td><td id="output_partner_two_investment" class="py-2 px-2 text-right font-semibold">₹3,05,017.50</td></tr>
+                                <tr class="bg-gray-100 font-bold"><td class="py-2 px-2">Total Partner Investment</td><td id="output_total_partner_investment" class="py-2 px-2 text-right">₹6,10,035.00</td></tr>
+                                <tr class="bg-green-50 font-bold"><td class="py-2 px-2 text-green-800">Partner 1 Profit Share</td><td id="output_partner_one_profit_share" class="py-2 px-2 text-right text-green-800">₹24,000.00</td></tr>
+                                <tr class="bg-green-50 font-bold"><td class="py-2 px-2 text-green-800">Partner 2 Profit Share</td><td id="output_partner_two_profit_share" class="py-2 px-2 text-right text-green-800">₹24,000.00</td></tr>
+                                <tr class="bg-green-100 font-bold"><td class="py-2 px-2 text-green-900">Total Return for Partner 1</td><td id="output_partner_one_total_return" class="py-2 px-2 text-right text-green-900">₹3,29,017.50</td></tr>
+                                <tr class="bg-green-100 font-bold"><td class="py-2 px-2 text-green-900">Total Return for Partner 2</td><td id="output_partner_two_total_return" class="py-2 px-2 text-right text-green-900">₹3,29,017.50</td></tr>
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
             </section>
@@ -214,7 +231,6 @@
             defect_percent: 0,
             advance_amount: 100000,
             profit_share_percent_one: 50,
-            // These will be user-controlled after initial load.
             partner_one_investment: 0,
             partner_two_investment: 0
         };
@@ -284,6 +300,9 @@
             
             c.partner_one_total_return = c.partner_one_investment + c.partner_one_profit_share;
             c.partner_two_total_return = c.partner_two_investment + c.partner_two_profit_share;
+            
+            // NEW CALCULATION: Balance payable by customer
+            c.balance_payable_by_customer = c.landed_cost_total - c.advance_amount;
         }
 
         function updateUI() {
@@ -306,6 +325,9 @@
             document.getElementById('output_profit_margin').textContent = `${(c.profit_margin * 100).toFixed(2)}%`;
             document.getElementById('output_breakeven_price').textContent = formatCurrency(c.breakeven_price);
             document.getElementById('output_advance_amount').textContent = formatCurrency(c.advance_amount);
+            
+            // NEW UI UPDATE: Balance payable by customer
+            document.getElementById('output_balance_payable_by_customer').textContent = formatCurrency(c.balance_payable_by_customer);
             
             document.getElementById('output_total_project_cost').textContent = formatCurrency(c.landed_cost_total);
             document.getElementById('output_net_cash_outlay').textContent = formatCurrency(c.net_cash_outlay);
@@ -388,7 +410,7 @@
                 });
             });
 
-            // Event listeners for partner investment inputs - NEW
+            // Event listeners for partner investment inputs
             partnerInvestmentIds.forEach(id => {
                 const element = document.getElementById(id);
                 element.addEventListener('input', (e) => {

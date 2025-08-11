@@ -109,11 +109,13 @@
                          <!-- NEW INPUTS FOR PARTNERSHIP -->
                         <div>
                             <label for="partner_one_investment" class="block font-medium text-gray-700 mb-1">Partner 1 Investment (₹)</label>
-                            <input type="number" id="partner_one_investment" min="0" max="2000000" step="100" value="300000" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <!-- The value will be set dynamically by JS -->
+                            <input type="number" id="partner_one_investment" min="0" max="2000000" step="100" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div>
                             <label for="partner_two_investment" class="block font-medium text-gray-700 mb-1">Partner 2 Investment (₹)</label>
-                            <input type="number" id="partner_two_investment" min="0" max="2000000" step="100" value="310035" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                             <!-- The value will be set dynamically by JS -->
+                            <input type="number" id="partner_two_investment" min="0" max="2000000" step="100" value="0" class="border p-2 rounded-lg w-full text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div>
                             <label for="profit_share_percent_one" class="block font-medium text-gray-700 mb-1">Partner 1 Profit Share (%)</label>
@@ -179,8 +181,8 @@
                                 <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Total Project Cost</td><td id="output_total_project_cost" class="py-3 px-2 text-right">₹7,10,035.00</td></tr>
                                 <tr class="bg-blue-50 font-bold"><td class="py-3 px-2 text-blue-800">Net Cash Outlay (Your Investment)</td><td id="output_net_cash_outlay" class="py-3 px-2 text-right text-blue-800">₹6,10,035.00</td></tr>
                                  <!-- NEW SECTION FOR INVESTMENT AND PROFIT SHARING -->
-                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Partner 1 Investment</td><td id="output_partner_one_investment" class="py-3 px-2 text-right">₹3,00,000.00</td></tr>
-                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Partner 2 Investment</td><td id="output_partner_two_investment" class="py-3 px-2 text-right">₹3,10,035.00</td></tr>
+                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Partner 1 Investment</td><td id="output_partner_one_investment" class="py-3 px-2 text-right">₹3,05,017.50</td></tr>
+                                <tr class="bg-gray-100 font-bold"><td class="py-3 px-2">Partner 2 Investment</td><td id="output_partner_two_investment" class="py-3 px-2 text-right">₹3,05,017.50</td></tr>
                                 <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Partner 1 Profit Share</td><td id="output_partner_one_profit_share" class="py-3 px-2 text-right text-green-800">₹24,000.00</td></tr>
                                 <tr class="bg-green-50 font-bold"><td class="py-3 px-2 text-green-800">Partner 2 Profit Share</td><td id="output_partner_two_profit_share" class="py-3 px-2 text-right text-green-800">₹24,000.00</td></tr>
                             </tbody>
@@ -211,12 +213,13 @@
             defect_percent: 0,
             advance_amount: 100000,
             // NEW STATE FOR PARTNERSHIP
-            partner_one_investment: 300000,
-            partner_two_investment: 310035,
+            partner_one_investment: 0, // This will be set dynamically
+            partner_two_investment: 0, // This will be set dynamically
             profit_share_percent_one: 50
         };
 
         const calculations = {};
+        // The investment inputs are no longer included in the common input IDs for automatic value setting.
         const commonInputIds = [
             'gst_percent', 
             'transport', 
@@ -225,9 +228,7 @@
             'other', 
             'defect_percent', 
             'advance_amount',
-            'partner_one_investment', // NEW ID
-            'partner_two_investment', // NEW ID
-            'profit_share_percent_one' // NEW ID
+            'profit_share_percent_one' 
         ];
         
         let costBreakdownChart, revenueCostChart;
@@ -268,9 +269,25 @@
             // CORRECTED Net Cash Outlay Calculation
             c.net_cash_outlay = c.landed_cost_total - s.advance_amount;
 
-            // NEW CALCULATIONS FOR PARTNERSHIP
-            c.partner_one_investment = s.partner_one_investment;
-            c.partner_two_investment = s.partner_two_investment;
+            // NEW LOGIC: AUTOMATICALLY SET PARTNER INVESTMENT TO HALF OF NET CASH OUTLAY
+            // Check if the user has manually changed the input. If not, auto-calculate.
+            const partnerOneInput = document.getElementById('partner_one_investment');
+            const partnerTwoInput = document.getElementById('partner_two_investment');
+
+            const halfOutlay = c.net_cash_outlay / 2;
+            
+            // We only set the state and the input value if the user hasn't modified it.
+            // A simple way to check is to see if the current value is already equal to the calculated value.
+            // This prevents the inputs from resetting when a user is trying to type.
+            if (parseFloat(partnerOneInput.value) === state.partner_one_investment) {
+                state.partner_one_investment = halfOutlay;
+            }
+            if (parseFloat(partnerTwoInput.value) === state.partner_two_investment) {
+                state.partner_two_investment = halfOutlay;
+            }
+
+            c.partner_one_investment = state.partner_one_investment;
+            c.partner_two_investment = state.partner_two_investment;
             const partner_one_share_rate = s.profit_share_percent_one / 100;
             const partner_two_share_rate = 1 - partner_one_share_rate;
 
@@ -303,6 +320,8 @@
             document.getElementById('output_net_cash_outlay').textContent = formatCurrency(c.net_cash_outlay);
             
             // NEW UI UPDATES FOR PARTNERSHIP
+            document.getElementById('partner_one_investment').value = c.partner_one_investment.toFixed(2);
+            document.getElementById('partner_two_investment').value = c.partner_two_investment.toFixed(2);
             document.getElementById('output_partner_one_investment').textContent = formatCurrency(c.partner_one_investment);
             document.getElementById('output_partner_two_investment').textContent = formatCurrency(c.partner_two_investment);
             document.getElementById('output_partner_one_profit_share').textContent = formatCurrency(c.partner_one_profit_share);
@@ -374,6 +393,23 @@
                     updateUI();
                 });
             });
+
+            // Event listeners for partner investment inputs
+            const partnerOneInput = document.getElementById('partner_one_investment');
+            const partnerTwoInput = document.getElementById('partner_two_investment');
+
+            partnerOneInput.addEventListener('input', (e) => {
+                state.partner_one_investment = parseFloat(e.target.value);
+                calculate();
+                updateUI();
+            });
+
+            partnerTwoInput.addEventListener('input', (e) => {
+                state.partner_two_investment = parseFloat(e.target.value);
+                calculate();
+                updateUI();
+            });
+
 
             // Event listeners for dynamic size inputs
             document.getElementById('size-table-body').addEventListener('input', (e) => {
